@@ -1,0 +1,83 @@
+The Simple factory pattern  describes a class that has one creation method with 
+a large conditional that based on method parameters chooses which product 
+class to instantiate and then return.
+
+People usually confuse simple factories with a general factories or with one 
+of the creational design patterns. In most cases, a simple factory is an intermediate 
+step of introducing Factory Method or Abstract Factory patterns.
+
+A simple factory is usually represented by a single method in a single class. 
+Over time, this method might become too big, so you may decide to extract parts 
+of the method to subclasses. Once you do it several times, you might discover 
+that the whole thing turned into the classic factory method pattern.
+
+By the way, if you declare a simple factory abstract, it doesn’t magically become 
+the abstract factory pattern.
+
+Here’s an example of simple factory:
+
+class UserFactory {
+    public static function create($type) {
+        switch ($type) {
+            case 'user': return new User();
+            case 'customer': return new Customer();
+            case 'admin': return new Admin();
+            default:
+                throw new Exception('Wrong user type passed.');
+        }
+    }
+}
+
+
+
+
+
+
+
+Factory Method pattern
+The Factory Method  is a creational design pattern that provides an interface for creating 
+objects but allows subclasses to alter the type of an object that will be created.
+
+If you have a creation method in base class and subclasses that extend it, you might be 
+looking at the factory method.
+
+abstract class Department {
+    public abstract function createEmployee($id);
+
+    public function fire($id) {
+        $employee = $this->createEmployee($id);
+        $employee->paySalary();
+        $employee->dismiss();
+    }
+}
+
+class ITDepartment extends Department {
+    public function createEmployee($id) {
+        return new Programmer($id);
+    }
+}
+
+class AccountingDepartment extends Department {
+    public function createEmployee($id) {
+        return new Accountant($id);
+    }
+}
+
+
+
+
+
+Abstract Factory pattern
+The Abstract Factory  is a creational design pattern that allows producing families of 
+related or dependent objects without specifying their concrete classes.
+
+What are the "families of objects"? For instance, take this set of classes: Transport + Engine + Controls. 
+There might be several variants of these:
+
+Car + CombustionEngine + SteeringWheel
+Plane + JetEngine + Yoke
+If your program doesn’t operate with product families, then you don’t need an abstract factory.
+
+And again, a lot of people mix-up the abstract factory pattern with a simple factory class declared as 
+abstract. Don’t do that!
+
